@@ -3,6 +3,7 @@
 #include <assert.h>
 #include "../headers/systemdata.h"
 #include <string.h>
+#include <stdlib.h>
 
 const int INCREASE_COEFF  = 2;
 const int VECTOR_MIN_SIZE = 8;
@@ -68,7 +69,7 @@ int pop(Vector *vec, void *buffer) {
 
     if (vec->size - 1 < 0) {
         printf(RED "vector error: " END_OF_COLOR "empty. Unable to pop value\n");
-        return NULL;
+        return ERROR;
     }
 
     memcpy(buffer, (char *) vec->data + --vec->size * vec->element_size, vec->element_size);
