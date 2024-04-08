@@ -5,25 +5,25 @@
 #include "../headers/func.h"
 #include <sys/stat.h>
 
-char *readbufStruct(struct Text *filedata) {
+char *readFileToStruct(struct Text *file_data) {
 
-    assert(filedata);
-    assert(filedata->filename);
+    assert(file_data);
+    assert(file_data->filename);
 
-    char *buf = (char *) calloc (filedata->filelen + 1, sizeof (char));
-    fread(buf, sizeof (char), filedata->filelen, filedata->filename);
+    char *buf = (char *) calloc (file_data->file_len + 1, sizeof (char));
+    fread(buf, sizeof (char), file_data->file_len, file_data->filename);
 
-    filedata->NumOfStr = NumOfStr(buf, filedata->filelen);
+    file_data->NumOfStr = numOfStr(buf, file_data->file_len);
 
     return buf;
 }
 
-char *readbuf(const char *filename) {
+char *readFileToBuffer(const char *filename) {
 
     assert(filename);
 
-    unsigned long len_of_file = filelen(filename);
-    FILE *fn = fileopen(filename, READ);
+    unsigned long len_of_file = lenOfFile(filename);
+    FILE *fn = openFile(filename, READ);
     if (!fn)
         return NULL;
 
@@ -34,12 +34,12 @@ char *readbuf(const char *filename) {
         return NULL;
     }
 
-    fileclose(fn);
+    closeFile(fn);
 
     return buf;
 }
 
-long long int NumOfStr(const char *str, size_t len) {
+long long int numOfStr(const char *str, size_t len) {
 
     assert(str);
 
@@ -51,25 +51,25 @@ long long int NumOfStr(const char *str, size_t len) {
     return col;
 }
 
-void SetStructText(struct Text *data, const char *filename) {
+void setStructText(struct Text *data, const char *filename) {
 
     assert(data);
 
-    data->filelen  = filelen (filename);
-    data->filename = fileopen(filename, READ);
+    data->file_len   = lenOfFile(filename);
+    data->filename   = openFile (filename, READ);
     data->NumOfWords = 0;
     data->NumOfStr   = 0;
 
 }
 
-void cleanfile(const char *filename) {
+void cleanFile(const char *filename) {
 
     assert(filename);
 
-    FILE *fn = fileopen(filename, WRITE);
+    FILE *fn = openFile(filename, WRITE);
 }
 
-FILE *fileopen(const char *filename, const char mode[]) {
+FILE *openFile(const char *filename, const char mode[]) {
 
     assert(filename);
 
@@ -81,7 +81,7 @@ FILE *fileopen(const char *filename, const char mode[]) {
     return fn;
 }
 
-void fileclose(FILE *fn) {
+void closeFile(FILE *fn) {
 
     assert(fn);
 
@@ -90,7 +90,7 @@ void fileclose(FILE *fn) {
             fprintf(stderr, "File not closed\n");
 }
 
-unsigned long filelen(const char *filename) {
+unsigned long lenOfFile(const char *filename) {
 
     assert(filename);
 

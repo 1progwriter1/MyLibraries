@@ -4,8 +4,8 @@
 #include "../headers/systemdata.h"
 #include <string.h>
 
-const int INCREASE_COEFF   = 2;
-const int VECTOR_INIT_SIZE = 8;
+const int INCREASE_COEFF  = 2;
+const int VECTOR_MIN_SIZE = 8;
 
 enum VecChangeSize {
     ChangeSizeRaise = 0,
@@ -54,7 +54,7 @@ int pushBack(Vector *vec, void *buffer) {
             return NO_MEMORY;
     }
 
-    memcpy(vec->data + vec->size++ * vec->element_size, buffer, vec->element_size);
+    memcpy((char *) vec->data + vec->size++ * vec->element_size, buffer, vec->element_size);
 
     return SUCCESS;
 }
@@ -71,9 +71,9 @@ int pop(Vector *vec, void *buffer) {
         return NULL;
     }
 
-    memcpy(buffer, vec->data + --vec->size * vec->element_size, vec->element_size);
+    memcpy(buffer, (char *) vec->data + --vec->size * vec->element_size, vec->element_size);
 
-    if (vec->capacity > VECTOR_INIT_SIZE && vec->capacity - vec->size > vec->capacity - vec->capacity / INCREASE_COEFF) {
+    if (vec->capacity > VECTOR_MIN_SIZE && vec->capacity - vec->size > vec->capacity - vec->capacity / INCREASE_COEFF) {
         if (resize(vec, ChangeSizeCut) != SUCCESS)
             return NO_MEMORY;
     }
@@ -97,7 +97,7 @@ static int resize(Vector *vec, VecChangeSize action) {
 
     vec->data = tmp;
 
-    memset(vec->data + vec->size, 0, (vec->capacity - vec->size) * vec->element_size);
+    memset((char *) vec->data + vec->size * vec->element_size, 0, (vec->capacity - vec->size) * vec->element_size);
 
     return SUCCESS;
 }
@@ -107,11 +107,11 @@ static int verifyVector(Vector *vec) {
     assert(vec);
 
     if (!vec->data) {
-        printf(RED "Vector data: NULL" END_OF_COLOR "\n");
+        printf(RED "vector error: " END_OF_COLOR "null data pointer\n");
         return ERROR;
     }
     if (vec->size >= vec->capacity) {
-        printf(RED "Vector: incorrect size or capacity" END_OF_COLOR "\n");
+        printf(RED "vector error: " END_OF_COLOR "incorrect size or capacity\n");
         return ERROR;
     }
 
