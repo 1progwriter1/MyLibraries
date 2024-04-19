@@ -7,9 +7,7 @@ SRC=$(wildcard $(SRC_DIR)/*.cpp)
 COMP=g++
 
 all:
-ifeq ($(wildcard $(OBJ_DIR)/*),)
-	mkdir $(OBJ_DIR)
-endif
+	@mkdir -p $(OBJ_DIR)
 	g++ -c $(SRC)
 	mv *.o $(OBJ_DIR)
 

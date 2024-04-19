@@ -117,3 +117,10 @@ static int verifyVector(Vector *vec) {
 
     return SUCCESS;
 }
+
+void *getPtr(Vector *vec, size_t index) {
+
+    assert(vec);
+
+    return ((char *) vec->data + index * vec->element_size);
+}
