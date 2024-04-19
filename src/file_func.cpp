@@ -4,6 +4,7 @@
 #include "../headers/systemdata.h"
 #include "../headers/func.h"
 #include <sys/stat.h>
+#include <stdlib.h>
 
 char *readFileToStruct(struct Text *file_data) {
 
