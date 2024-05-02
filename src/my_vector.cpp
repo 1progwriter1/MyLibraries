@@ -111,7 +111,7 @@ static int verifyVector(Vector *vec) {
         printf(RED "vector error: " END_OF_COLOR "null data pointer\n");
         return ERROR;
     }
-    if (vec->size >= vec->capacity) {
+    if (vec->size > vec->capacity) {
         printf(RED "vector error: " END_OF_COLOR "incorrect size or capacity\n");
         return ERROR;
     }
